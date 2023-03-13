@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkings</title>
+</head>
+<body>
+    <div style="width: 50%; margin:auto;"></div>
+    <%- include('./composant/header') %>
+    <section>
+        <form action="/parkings" method="post">
+            <input type="hidden" name ="id" id="id">
+            <label for="name">name</label><br>
+            <input type="text" id="name" name="name"><br>
+            <label for="type">type</label><br>
+            <input type="text" id="type" name="type"><br>
+            <label for="city">city</label><br>
+            <input type="text" id="city" name="city"><br>
+            <br>
+            <input type="submit" value="Enregistrer">
+        </form>
+        <p>-----------------------------------------------</p>
+        <section>
+            <h2>Liste des parkings</h2>
+                <% for (var i = 0; i < parkings.length; i++){%>
+                        <h3><%= parkings[i]["id"]%></h3>
+                        <h3><%= parkings[i]["name"]%></h3>
+                        <h3><%= parkings[i]["type"]%></h3>
+                        <h3><%= parkings[i]["city"]%></h3>
+                        <input type="button" value="Suppimer" onclick="supprimer('<%= parkings[i].id %>')">
+                        <input type="button" value="Modifier" onclick="remplirDonnees('<%= parkings[i].id %>', '<%= parkings[i].name %>', '<%= parkings[i].type %>', '<%= parkings[i].city %>')">
+                <%}%>
+             
+        </section>
+    </section>
+</body>
+<script>
+    function remplirDonnees(id, name, type, city){
+        document.getElementById("id").value = id,
+        document.getElementById("name").value = name,
+        document.getElementById("type").value = type,
+        document.getElementById("city").value = city
+    }
+    function supprimer(id){
+        let pointFinal = "parkings/"+id
+        fetch(
+            pointFinal,{method : "DELETE"}
+            ).then(
+                (reponse)=> reponse.json()
+            ).then(
+                (donnee)=> window.location.href = donnee.routeRacine
+            ).catch((erreur)=> console.log(erreur))
+    }
+</script>
+</html>
